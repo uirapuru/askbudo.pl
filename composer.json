@@ -1,0 +1,12 @@
+{
+    "require": {
+        "silex/silex": "~1.1",
+        "twig/twig": ">=1.8,<2.0-dev",
+        "symfony/config": "2.*",
+        "symfony/validator": "2.*",
+        "symfony/form": "2.*",
+        "symfony/twig-bridge": "2.*",
+        "symfony/yaml": "2.*",
+        "swiftmailer/swiftmailer": "5.*"
+    }
+}
