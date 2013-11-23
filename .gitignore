@@ -3,3 +3,6 @@ qa-config.php
 /nbproject
 /views/cache
 /vendor
+/stats
+/logs
+/awstats
