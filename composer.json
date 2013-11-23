@@ -7,6 +7,8 @@
         "symfony/form": "2.*",
         "symfony/twig-bridge": "2.*",
         "symfony/yaml": "2.*",
-        "swiftmailer/swiftmailer": "5.*"
+        "symfony/translation": "~2.3",
+        "swiftmailer/swiftmailer": "5.*",
+        "doctrine/dbal": "2.2.*"
     }
 }

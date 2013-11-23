@@ -1,116 +1,40 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Silex\Provider\FormServiceProvider;
-use Symfony\Component\Validator\Constraints as Assert;
 
-set_include_path(implode(PATH_SEPARATOR, array(
-    __DIR__ . "/../vendor",
-    get_include_path()
-)));
 
-require_once __DIR__ . '/../vendor/autoload.php';
 
-$app = new Silex\Application();
 
-// debug
+/*
+	Question2Answer (c) Gideon Greenspan
 
-$app["debug"] = true;
+	http://www.question2answer.org/
 
-// twig
+	
+	File: index.php
+	Version: See define()s at top of qa-include/qa-base.php
+	Description: A stub that only sets up the Q2A root and includes qa-index.php
 
-$app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path'    => __DIR__ . '/../views',
-    'twig.options' => array(
-        'cache' => __DIR__ . '/../views/cache',
-    )
-));
 
-// session
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-$app->register(new Silex\Provider\SessionServiceProvider());
+	More about this license: http://www.question2answer.org/license.php
+*/
 
-// formularz
+//	Set base path here so this works with symbolic links for multiple installations
 
-$app->register(new FormServiceProvider());
+	define('QA_BASE_DIR', dirname(empty($_SERVER['SCRIPT_FILENAME']) ? __FILE__ : $_SERVER['SCRIPT_FILENAME']).'/');
+	
+	require 'qa-include/qa-index.php';
 
-$data = array(
-    'email'   => '',
-    'message' => '',
-);
 
-$form = $app['form.factory']->createBuilder('form', $data)
-        ->add('name', "text", array(
-            "label"    => false,
-            "required" => true,
-            "attr"     => array(
-                "placeholder" => "Twoje imie"
-            )
-        ))
-        ->add('email', "email", array(
-            "label"    => false,
-            "required" => true,
-            "attr"     => array(
-                "placeholder" => "Twój email"
-            )
-        ))
-        ->add('message', "textarea", array(
-            "label"    => false,
-            "required" => true,
-            "attr"     => array(
-                "placeholder" => "Treść wiadomości"
-            )
-        ))
-        ->getForm();
-
-// routingi
-
-$app->get('/language/{lang}', function ($lang) use ($app) {
-    $app['session']->set('language', $lang);
-    return $app->redirect('/');
-})->value("lang", "pl");
-
-$app->get('/{page}', function ($page) use ($app, $form) {
-            $pages = array(
-                "company.html",
-                "realisations.html",
-                "clients.html",
-                "contact.html",
-            );
-
-            $index = array_search($page, $pages);
-
-            $pages_temp = array();
-
-            foreach ($pages as $i => $link) {
-                if ($index === false)
-                {
-                    $pages_temp[$link] = "right";
-                }
-                else if ($i < $index && $index !== false)
-                {
-                    $pages_temp[$link] = "left";
-                }
-                else if ($i == $index)
-                {
-                    $pages_temp[$link] = "active";
-                }
-                else if ($i > $index)
-                {
-                    $pages_temp[$link] = "right";
-                }
-            }
-
-            return $app['twig']->render('layout.twig', array(
-                        'form'     => $form->createView(),
-                        "page"     => $page ? $page : null, "pages"    => $pages_temp,
-                        "language" => $app['session']->get('language', "pl")
-                            )
-            );
-        })
-        ->value("page", "company.html")
-;
-
-$app->run();
+/*
+	Omit PHP closing tag to help avoid accidental output
+*/
